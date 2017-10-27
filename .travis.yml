@@ -1,0 +1,51 @@
+language: cpp
+sudo: false
+dist: trusty
+compiler:
+  - gcc
+cache:
+  directories:
+  - $HOME/CooleRRSA/Force/src/leveldb
+  - $HOME/CooleRRSA/Force/src/secp256k1
+env:
+  global:
+    - MAKEJOBS=-j2
+os:
+  - linux
+addons:
+  apt:
+    sources:
+    - sourceline: 'ppa:bitcoin/bitcoin'
+    packages:
+    - autoconf
+    - autotools-dev
+    - build-essential
+    - libboost-all-dev
+    - libcrypto++-dev
+    - libdb4.8++-dev
+    - libdb4.8-dev
+    - libevent-dev
+    - libgmp-dev
+    - libminiupnpc-dev
+    - libprotobuf-dev
+    - libqt5core5a
+    - libqt5dbus5
+    - libqt5gui5
+    - libssl-dev
+    - libtool
+    - pkg-config
+    - protobuf-compiler
+    - qttools5-dev
+    - qttools5-dev-tools
+before_install:
+  - chmod 755 src/leveldb/build_detect_platform
+  - chmod 755 src/secp256k1/autogen.sh
+  - $CC --version
+  - which $CC
+  - export CC=`which $CC`
+script:
+  - cd src
+  - make -f makefile.unix
+  - cd ..
+  - qmake -qt=qt5 USE_UPNP=- "QMAKE_CXX=$CXX" "QMAKE_CC=$CC"
+  - make
