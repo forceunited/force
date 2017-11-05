@@ -7,8 +7,7 @@
 // IPv4 as well as onion addresses are wrapped inside a IPv6 address accordingly.
 static const unsigned int pnSeed[] =
 {
-0x8A800560,
-0xB9909CD7
+0xabdbb18e
 };
 
 
