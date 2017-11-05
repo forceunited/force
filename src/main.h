@@ -23,8 +23,18 @@ class CValidationState;
 static const int64_t DARKSEND_COLLATERAL = (0.01*COIN);
 static const int64_t DARKSEND_POOL_MAX = (599999.99*COIN);
 
-static const int64_t STATIC_POS_REWARD = 1500 * COIN; //Constant reward of 1 FOR per COIN i.e. 8%
+static const int64_t STATIC_POS_REWARD = 0 * COIN; //Constant reward of 1 FOR per COIN i.e. 8%
 static const int64_t TARGET_SPACING = 30;
+
+inline int GetTargetSpacing(int Height=nBestHeight, bool fProofOfStake=false)
+{
+    if (Height <= 50000){
+        return TARGET_SPACING;
+    }else{
+        return 45;
+    }
+}
+ 
 
 #define INSTANTX_SIGNATURES_REQUIRED           10
 #define INSTANTX_SIGNATURES_TOTAL              15
