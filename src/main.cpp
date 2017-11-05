@@ -1369,8 +1369,9 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 	{
 		nSubsidy = 1500 * COIN; // initial block reward
 	}
-    else //if (nHeight > 50000){
-        nSubsidy = 100 * COIN;
+    else //if (nHeight > 50000)
+    {
+        nSubsidy = 100 * COIN
     }
     return nSubsidy + nFees;
 
@@ -1419,16 +1420,16 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
     int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 
     if (nActualSpacing < 0){
-        nActualSpacing = TARGET_SPACING;
+        nActualSpacing = GetTargetSpacing(pindexLast->nHeight, fProofOfStake);
     }
 
     // ppcoin: target change every block
     // ppcoin: retarget with exponential moving toward target spacing
     CBigNum bnNew;
     bnNew.SetCompact(pindexPrev->nBits);
-    int64_t nInterval = nTargetTimespan / TARGET_SPACING;
-    bnNew *= ((nInterval - 1) * TARGET_SPACING + nActualSpacing + nActualSpacing);
-    bnNew /= ((nInterval + 1) * TARGET_SPACING);
+    int64_t nInterval = nTargetTimespan / GetTargetSpacing(pindexLast->nHeight, fProofOfStake);
+    bnNew *= ((nInterval - 1) * GetTargetSpacing(pindexLast->nHeight, fProofOfStake) + nActualSpacing + nActualSpacing);
+    bnNew /= ((nInterval + 1) * GetTargetSpacing(pindexLast->nHeight, fProofOfStake));
 
     if (bnNew <= 0 || bnNew > bnTargetLimit)
         bnNew = bnTargetLimit;
