@@ -320,7 +320,7 @@ Value masternode(const Array& params, bool fHelp)
 
         if (params.size() == 2)
         {
-            if(params[1] == "enabled") return mnodeman.CountEnabled();
+            if(params[1] == "enabled") return static_cast<int>(mnodeman.CountEnabled());
             if(params[1] == "both") return boost::lexical_cast<std::string>(mnodeman.CountEnabled()) + " / " + boost::lexical_cast<std::string>(mnodeman.size());
         }
         return mnodeman.size();

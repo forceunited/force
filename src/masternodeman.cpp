@@ -291,9 +291,9 @@ void CMasternodeMan::Clear()
     nDsqCount = 0;
 }
 
-int CMasternodeMan::CountEnabled(int protocolVersion)
+unsigned int CMasternodeMan::CountEnabled(int protocolVersion)
 {
-    int i = 0;
+    unsigned int i = 0;
     protocolVersion = protocolVersion == -1 ? masternodePayments.GetMinMasternodePaymentsProto() : protocolVersion;
 
     BOOST_FOREACH(CMasternode& mn, vMasternodes) {

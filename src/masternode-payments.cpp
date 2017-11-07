@@ -229,7 +229,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     if(nBlockHeight <= nLastBlockHeight) return false;
     if(!enabled) return false;
     CMasternodePaymentWinner newWinner;
-    int nMinimumAge = mnodeman.CountEnabled();
+    unsigned int nMinimumAge = mnodeman.CountEnabled();
     CScript payeeSource;
 
     uint256 hash;
