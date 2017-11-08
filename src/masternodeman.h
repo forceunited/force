@@ -106,7 +106,7 @@ public:
     // Clear masternode vector
     void Clear();
 
-    int CountEnabled(int protocolVersion = -1);
+    unsigned int CountEnabled(int protocolVersion = -1);
 
     int CountMasternodesAboveProtocol(int protocolVersion);
 
