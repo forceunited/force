@@ -28,10 +28,16 @@ static const int64_t TARGET_SPACING = 30;
 
 inline int GetTargetSpacing(int Height=nBestHeight, bool fProofOfStake=false)
 {
-    if (Height <= 50000){
+    if (Height <= 50000) {
         return TARGET_SPACING;
-    }else{
+    }
+    else if (Height > 50000 && Height <= 150000) {
         return 45;
+    }
+    else {
+        if (fProofOfStake)
+            return 45;
+        return 60;
     }
 }
  
