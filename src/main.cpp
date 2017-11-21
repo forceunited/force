@@ -1357,21 +1357,20 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
     int64_t nSubsidy = 0 * COIN;
 
-    if (nHeight == 1)
-	{
+    if (nHeight == 1) {
         nSubsidy = 4000000 * COIN; // premine
     }
-	else if (nHeight > 1 && nHeight <= 20)
-	{
+	else if (nHeight > 1 && nHeight <= 20) {
 		nSubsidy = 0 * COIN; // premine to be confirmed
 	}		
-	else if (nHeight > 20 && nHeight <= 50000)
-	{
+	else if (nHeight > 20 && nHeight <= 50 * 1000) {
 		nSubsidy = 1500 * COIN; // initial block reward
 	}
-    else //if (nHeight > 50000)
-    {
+    else if (nHeight > 50 * 1000 && nHeight <= 150 * 1000) {
         nSubsidy = 150 * COIN;
+    }
+    else if (nHeight > 150 * 1000) {
+        nSubsidy = 0 * COIN;
     }
     return nSubsidy + nFees;
 
@@ -1380,15 +1379,27 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 // miner's coin stake reward
 int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, int64_t nFees)
 {
-    int64_t nSubsidy = STATIC_POS_REWARD;
-	if (pindexBest->nHeight+1 > 1 && pindexBest->nHeight+1 <= 50000)
-	{
-		nSubsidy = 1500 * COIN; // DPOS
+    int64_t nSubsidy = 0;
+
+	if (pindexBest->nHeight+1 > 1 && pindexBest->nHeight+1 <= 50000) {
+		nSubsidy = 1500 * COIN;
 	}
-	else //if (pindexBest->nHeight+1 > 50000)
-	{
-		nSubsidy = 250 * COIN; // Pure POS
+	else if (pindexBest->nHeight+1 > 50000 && pindexBest->nHeight+1 <= 150000)	{
+		nSubsidy = 250 * COIN; 
 	}
+    else if (pindexBest->nHeight+1 > 150000 && pindexBest->nHeight+1 <= 200000) {
+        nSubsidy = 160 * COIN;
+    }
+    else if (pindexBest->nHeight+1 > 200000 && pindexBest->nHeight+1 <= 300000) {
+        nSubsidy = 100 * COIN;
+    }
+    else if (pindexBest->nHeight+1 > 300000) {
+        nSubsidy = 100;
+        int64_t div = (pindexBest->nHeight - 200000) / 100000;
+        for (int i = 0; i < div && nSubsidy > 0; i++) {
+            nSubsidy -= nSubsidy * 10 / 100;
+        }
+    }
     return nSubsidy + nFees;
 }
 
