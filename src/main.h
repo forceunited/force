@@ -31,13 +31,8 @@ inline int GetTargetSpacing(int Height=nBestHeight, bool fProofOfStake=false)
     if (Height <= 50000) {
         return TARGET_SPACING;
     }
-    else if (Height > 50000 && Height <= 150000) {
-        return 45;
-    }
     else {
-        if (fProofOfStake)
             return 45;
-        return 60;
     }
 }
  
