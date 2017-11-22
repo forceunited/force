@@ -105,7 +105,7 @@ public:
         //strSporkKey = "04815fc918ae312c96ea426062e38fb9fb8b6b979b4fb2cd18e1ee7be2ff46b7fd0230e958205acb76ae7b84acc25ec3f61621baf6a23e048568195525f43dedd6";
         //strMasternodePaymentsPubKey = "04815fc918ae312c96ea426062e38fb9fb8b6b979b4fb2cd18e1ee7be2ff46b7fd0230e958205acb76ae7b84acc25ec3f61621baf6a23e048568195525f43dedd6";
         strDarksendPoolDummyAddress = "FLXzgR2fTeVHhSaBwuCVXYLywo9BKf1s8j";
-        nLastPOWBlock = 0x7fffffff;
+        nLastPOWBlock = 150000;
         nPOSStartBlock = 100;
     }
 

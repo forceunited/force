@@ -3586,26 +3586,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     
     int64_t blockValue = nCredit;
     int64_t devfee = 0;
-    int64_t masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward);
+    int64_t masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward); //Why reward and not blockvalue ?
 
     // Add the dev fees payment (block 80000 to be change when hardfork decided and code ready)
-    if (pindexPrev->nHeight+1 > 80000) {
+    if (pindexPrev->nHeight+1 > 150000) {
         blockValue = nCredit - (nCredit * 10 / CENT);
+        masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward - (nReward * 10 / 100));
         devfee = nCredit * 10 / CENT;
-
-        //Adding devfees to the TX
-        payments = txNew.vout.size() + 1;
-        txNew.vout.resize(payments);
-
-        CForcecoinAddress devRewardAddress("F7kC7U3yrV1MCkScGyVQ5HxWEZTJKy6GhQ");
-
-        txNew.vout[payments-1].scriptPubKey = devRewardAddress;
-        txNew.vout[payments-1].nValue = 0;
-
-        LogPrintf("Dev fee payment to %s\n", devRewardAddress.ToString().c_str());
-
-        //ToDo: recalculate with the right value the repartition of the block reward in the following code
-        //ToDo: Change all if to take into account the new payment added at the end the txNew.vout.
 
         // Set output amount
         if(hasPayment && txNew.vout.size() == 4 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // 2 stake outputs, stake was split, plus a masternode payment, no reward split
@@ -3636,6 +3623,19 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             blockValue -= masternodePayment;
             txNew.vout[1].nValue = blockValue;
         }
+
+        //Adding devfee to the TX
+        payments = txNew.vout.size() + 1;
+        txNew.vout.resize(payments);
+
+        CForcecoinAddress devRewardAddress("FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4");
+        CScript devRewardscriptPubKey;
+        devRewardscriptPubKey.SetDestination(devRewardAddress.Get());
+
+        txNew.vout[payments-1].scriptPubKey = devRewardscriptPubKey;
+        txNew.vout[payments-1].nValue = devfee;
+
+        LogPrintf("Dev fee payment to %s\n", devRewardAddress.ToString().c_str());
     }
     else {
 
