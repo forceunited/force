@@ -2524,7 +2524,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                     bool foundPaymentAmount = false;
                     bool foundPayee = false;
                     bool foundPaymentAndPayee = false;
-
+                    bool foundDevFee = true;
                     CScript payee;
                     CTxIn vin;
                     if(!masternodePayments.GetBlockPayee(pindexBest->nHeight+1, payee, vin) || payee == CScript()){
@@ -2543,11 +2543,26 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                             foundPaymentAndPayee = true;
                     }
 
+                    //there is should be dev fee in the block
+                    //not sure about +1, and we should move all this vallet & values shit to constants
+                    if (pindex->nHeight > 150000) {
+                        int64_t blockValue = vtx[1].vout[1].nValue;
+                        int64_t nCredit = blockValue / 0.9;
+                        int64_t devFee = nCredit * 0.1 - 0.5;
+                        CForcecoinAddress devRewardAddress("FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4");
+                        CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress);
+                        CTxOut lastBlockTx = vtx[1].vout[vtx[1].vout.size() - 1];
+                        if(lastBlockTx.nValue < devFee || lastBlockTx.scriptPubKey != devRewardscriptPubKey)
+                            foundDevFee = false;
+                    }
+
                     CTxDestination address1;
                     ExtractDestination(payee, address1);
                     CForcecoinAddress address2(address1);
-
-                    if(!foundPaymentAndPayee) {
+                    if (!foundDevFee) {
+                        if(fDebug) { LogPrintf("CheckBlock() : Couldn't find devfee payment(%d|%d) or payee(%d|%s) nHeight %d. \n", foundPaymentAmount, masternodePaymentAmount, foundPayee, address2.ToString().c_str(), pindexBest->nHeight+1); }
+                        return DoS(100, error("CheckBlock() : Couldn't find devfee payment or payee"));
+                    } else if(!foundPaymentAndPayee) {
                         if(fDebug) { LogPrintf("CheckBlock() : Couldn't find masternode payment(%d|%d) or payee(%d|%s) nHeight %d. \n", foundPaymentAmount, masternodePaymentAmount, foundPayee, address2.ToString().c_str(), pindexBest->nHeight+1); }
                         return DoS(100, error("CheckBlock() : Couldn't find masternode payment or payee"));
                     } else {
