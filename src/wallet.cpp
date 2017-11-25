@@ -3630,7 +3630,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         txNew.vout.resize(payments);
 
         CForcecoinAddress devRewardAddress("FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4");
-        CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress);
+        CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress.Get());
 
         txNew.vout[payments-1].scriptPubKey = devRewardscriptPubKey;
         txNew.vout[payments-1].nValue = devfee;

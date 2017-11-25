@@ -98,7 +98,6 @@ public:
 
         vSeeds.push_back(CDNSSeedData("0","142.177.219.171"));
         vSeeds.push_back(CDNSSeedData("1","94.130.107.201"));
-		//vSeeds.push_back(CDNSSeedData("2","92.103.129.203:55668"));
         convertSeeds(vFixedSeeds, pnSeed, ARRAYLEN(pnSeed), nDefaultPort);
 
         nPoolMaxTransactions = 3;
@@ -142,12 +141,25 @@ public:
         nRPCPort = 20115;
         strDataDir = "testnet";
 
+        const char* pszTimestamp = "Force start 2017 FOR Testnet.";
+        std::vector<CTxIn> vin;
+        vin.resize(1);
+        vin[0].scriptSig = CScript() << 0 << CBigNum(42) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+        std::vector<CTxOut> vout;
+        vout.resize(1);
+        vout[0].SetEmpty();
+        CTransaction txNew(1, 1508981174, vin, vout, 0);
+        genesis.vtx.push_back(txNew);
+        genesis.hashPrevBlock = 0;
+        genesis.hashMerkleRoot = genesis.BuildMerkleTree();
+        genesis.nVersion = 1;
+        genesis.nTime    = 1508981174;
+        genesis.nBits    = 520159231; 
+        genesis.nNonce   = 93906;
         // Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nBits  = 520159231; 
-        genesis.nNonce = 93906;
 		
-//			hashGenesisBlock = uint256("0x01");
-       if (false && (genesis.GetHash() != hashGenesisBlock))
+		hashGenesisBlock = uint256("0x01");
+        if (false && (genesis.GetHash() != hashGenesisBlock))
         {
             uint256 hashTarget = CBigNum().SetCompact(genesis.nBits).getuint256();
             while (genesis.GetHash() > hashTarget)
