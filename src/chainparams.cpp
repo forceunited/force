@@ -137,7 +137,7 @@ public:
         pchMessageStart[3] = 0x30;
         bnProofOfWorkLimit = CBigNum(~uint256(0) >> 16);
         vAlertPubKey = ParseHex("0495c1153a4b833bc309fd145955e851b73d424967065d547b1a051d7de0e30cc5d3866270a79b839ce0221b8ef1eff3873e83499ee6336725b1abe8be1e4c6af0");
-        nDefaultPort = 20114;
+        nDefaultPort = 55555;
         nRPCPort = 20115;
         strDataDir = "testnet";
 
@@ -155,10 +155,10 @@ public:
         genesis.nVersion = 1;
         genesis.nTime    = 1508981174;
         genesis.nBits    = 520159231; 
-        genesis.nNonce   = 93906;
+        genesis.nNonce   = 202194;
         // Modify the testnet genesis block so the timestamp is valid for a later start.
 		
-		hashGenesisBlock = uint256("0x01");
+		//hashGenesisBlock = uint256("0x01");
         if (false && (genesis.GetHash() != hashGenesisBlock))
         {
             uint256 hashTarget = CBigNum().SetCompact(genesis.nBits).getuint256();
@@ -176,8 +176,17 @@ public:
             cout << "testnet.genesis.hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << endl;
             cout << "testnet.genesis.nTime: " << genesis.nTime << endl;
             cout << "testnet.genesis.nNonce: " << genesis.nNonce << endl;
+            printf("testnet.genesis : %s\n", genesis.ToString().c_str());
+            printf("testnet.genesis.GetHash(): %s\n", genesis.GetHash().ToString().c_str());
+            printf("testnet.genesis.hashMerkleRoot: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+            printf("testnet.genesis.nTime: %u\n", genesis.nTime);
+            printf("testnet.genesis.nNonce: %u\n", genesis.nNonce);
         }
-        assert(hashGenesisBlock == uint256("0x000048811e0aeb4e7f770ab1d85ff37d3ad604912ea6f1a533f5ec444eb18c8b"));
+
+        hashGenesisBlock = genesis.GetHash();
+
+        assert(hashGenesisBlock == uint256("0x00001a5d6f664904f461f7910d4b898f5d65b1b6c7d334171c3db807863546a4"));
+        assert(genesis.hashMerkleRoot == uint256("0x331c6efcd3bdf90255d366194d293aab8f5256a5cb9233bd169ff9734a7f56e3"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
