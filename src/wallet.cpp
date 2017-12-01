@@ -3586,7 +3586,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     
     int64_t blockValue = nCredit;
     int64_t devfee = 0;
-    int64_t masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward); //Why reward and not blockvalue ?
+    int64_t masternodePayment = nReward * 1/2; //Why reward and not blockvalue ?
 
     // Add the dev fees payment (block 150000 to be change when hardfork decided and code ready)
     if (pindexPrev->nHeight+1 > 150000) {
@@ -3677,7 +3677,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             txNew.vout[1].nValue = blockValue;
         }
     }
-
+    
     // Sign
     int nIn = 0;
     BOOST_FOREACH(const CWalletTx* pcoin, vwtxPrev)
