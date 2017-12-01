@@ -3531,6 +3531,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             }
         }
     }
+
     // If reward percent is 0 then send all to masternode address
     if(hasPayment && payeerewardpercent == 0){
         payments = txNew.vout.size() + 1;
@@ -3584,37 +3585,99 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
     
     int64_t blockValue = nCredit;
-    int64_t masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward);
+    int64_t devfee = 0;
+    int64_t masternodePayment = nReward * 1/2; //Why reward and not blockvalue ?
 
-    // Set output amount
-    if(hasPayment && txNew.vout.size() == 4 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // 2 stake outputs, stake was split, plus a masternode payment, no reward split
-    {
-        txNew.vout[payments-1].nValue = masternodePayment;
-        blockValue -= masternodePayment;
-        txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
-        txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+    // Add the dev fees payment (block 150000 to be change when hardfork decided and code ready)
+    if (pindexPrev->nHeight+1 > 150000) {
+        masternodePayment = nReward * 0.55;
+        devfee = nReward * 0.15;
+        if (pindexPrev->nHeight+1 > 175000 && pindexPrev->nHeight+1 <= 200000)
+        {
+            masternodePayment = nReward * 0.6;
+            devfee = nReward * 0.1;
+        }
+        else if (pindexPrev->nHeight+1 > 200000) {
+            masternodePayment = nReward * 0.65;
+            devfee = nReward * 0.1;
+        }
+
+        blockValue = nCredit - devfee;
+        // Set output amount
+        if(hasPayment && txNew.vout.size() == 4 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // 2 stake outputs, stake was split, plus a masternode payment, no reward split
+        {
+            txNew.vout[payments-1].nValue = masternodePayment;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
+            txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+        }
+        else if(hasPayment && txNew.vout.size() == 3 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // only 1 stake output, was not split, plus a masternode payment, no reward split
+        {
+            txNew.vout[payments-1].nValue = masternodePayment;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = blockValue;
+        }
+        else if(hasPayment && txNew.vout.size() == 5 && payeerewardpercent > 0 && payeerewardpercent < 100) // 2 stake outputs, stake was split, plus a masternode payment
+        {
+            txNew.vout[payments-2].nValue = (masternodePayment / 100) * (100 - payeerewardpercent);
+            txNew.vout[payments-1].nValue = masternodePayment - txNew.vout[payments-2].nValue;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
+            txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+        }
+        else if(hasPayment && txNew.vout.size() == 4 && payeerewardpercent > 0 && payeerewardpercent < 100) // only 1 stake output, was not split, plus a masternode payment
+        {
+            txNew.vout[payments-2].nValue = (masternodePayment / 100) * (100 - payeerewardpercent);
+            txNew.vout[payments-1].nValue = masternodePayment - txNew.vout[payments-2].nValue;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = blockValue;
+        }
+
+        //Adding devfee to the TX
+        payments = txNew.vout.size() + 1;
+        txNew.vout.resize(payments);
+
+        CForcecoinAddress devRewardAddress("FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4");
+        CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress.Get());
+
+        txNew.vout[payments-1].scriptPubKey = devRewardscriptPubKey;
+        txNew.vout[payments-1].nValue = devfee;
+
+        LogPrintf("Dev fee payment to %s\n", devRewardAddress.ToString().c_str());
     }
-    else if(hasPayment && txNew.vout.size() == 3 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // only 1 stake output, was not split, plus a masternode payment, no reward split
-    {
-        txNew.vout[payments-1].nValue = masternodePayment;
-        blockValue -= masternodePayment;
-        txNew.vout[1].nValue = blockValue;
+    else {
+
+        // Set output amount
+        if(hasPayment && txNew.vout.size() == 4 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // 2 stake outputs, stake was split, plus a masternode payment, no reward split
+        {
+            txNew.vout[payments-1].nValue = masternodePayment;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
+            txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+        }
+        else if(hasPayment && txNew.vout.size() == 3 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // only 1 stake output, was not split, plus a masternode payment, no reward split
+        {
+            txNew.vout[payments-1].nValue = masternodePayment;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = blockValue;
+        }
+        else if(hasPayment && txNew.vout.size() == 5 && payeerewardpercent > 0 && payeerewardpercent < 100) // 2 stake outputs, stake was split, plus a masternode payment
+        {
+            txNew.vout[payments-2].nValue = (masternodePayment / 100) * (100 - payeerewardpercent);
+            txNew.vout[payments-1].nValue = masternodePayment - txNew.vout[payments-2].nValue;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
+            txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
+        }
+        else if(hasPayment && txNew.vout.size() == 4 && payeerewardpercent > 0 && payeerewardpercent < 100) // only 1 stake output, was not split, plus a masternode payment
+        {
+            txNew.vout[payments-2].nValue = (masternodePayment / 100) * (100 - payeerewardpercent);
+            txNew.vout[payments-1].nValue = masternodePayment - txNew.vout[payments-2].nValue;
+            blockValue -= masternodePayment;
+            txNew.vout[1].nValue = blockValue;
+        }
     }
-    else if(hasPayment && txNew.vout.size() == 5 && payeerewardpercent > 0 && payeerewardpercent < 100) // 2 stake outputs, stake was split, plus a masternode payment
-    {
-        txNew.vout[payments-2].nValue = (masternodePayment / 100) * (100 - payeerewardpercent);
-        txNew.vout[payments-1].nValue = masternodePayment - txNew.vout[payments-2].nValue;
-        blockValue -= masternodePayment;
-        txNew.vout[1].nValue = (blockValue / 2 / CENT) * CENT;
-        txNew.vout[2].nValue = blockValue - txNew.vout[1].nValue;
-    }
-    else if(hasPayment && txNew.vout.size() == 4 && payeerewardpercent > 0 && payeerewardpercent < 100) // only 1 stake output, was not split, plus a masternode payment
-    {
-        txNew.vout[payments-2].nValue = (masternodePayment / 100) * (100 - payeerewardpercent);
-        txNew.vout[payments-1].nValue = masternodePayment - txNew.vout[payments-2].nValue;
-        blockValue -= masternodePayment;
-        txNew.vout[1].nValue = blockValue;
-    }
+    
     // Sign
     int nIn = 0;
     BOOST_FOREACH(const CWalletTx* pcoin, vwtxPrev)

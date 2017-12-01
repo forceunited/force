@@ -28,10 +28,11 @@ static const int64_t TARGET_SPACING = 30;
 
 inline int GetTargetSpacing(int Height=nBestHeight, bool fProofOfStake=false)
 {
-    if (Height <= 50000){
+    if (Height <= 50000) {
         return TARGET_SPACING;
-    }else{
-        return 45;
+    }
+    else {
+            return 45;
     }
 }
  
@@ -185,8 +186,6 @@ int GetIXConfirmations(uint256 nTXHash);
 bool AbortNode(const std::string &msg, const std::string &userMessage="");
 /** Get statistics from node state */
 bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
-
-int64_t GetMasternodePayment(int nHeight, int64_t blockValue);
 
 struct CNodeStateStats {
     int nMisbehavior;

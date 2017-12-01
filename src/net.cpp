@@ -398,14 +398,15 @@ CNode* ConnectNode(CAddress addrConnect, const char *pszDest, bool darkSendMaste
         if (IsLocal(addrConnect))
             return NULL;
 
+        LOCK(cs_vNodes);
         // Look for an existing connection
         CNode* pnode = FindNode((CService)addrConnect);
         if (pnode)
         {
-            if(darkSendMaster)
+            if(darkSendMaster && !pnode->fDarkSendMaster) {
+                pnode->AddRef();
                 pnode->fDarkSendMaster = true;
-
-            pnode->AddRef();
+            }
             return pnode;
         }
     }
@@ -847,8 +848,14 @@ void ThreadSocketHandler()
                 }
             }
         }
-        if(vNodes.size() != nPrevNodeCount) {
-            nPrevNodeCount = vNodes.size();
+        
+        size_t vNodesSize;
+        {
+             LOCK(cs_vNodes);
+             vNodesSize = vNodes.size();
+        }
+        if(vNodesSize != nPrevNodeCount) {
+            nPrevNodeCount = vNodesSize;
             uiInterface.NotifyNumConnectionsChanged(nPrevNodeCount);
         }
 
@@ -1374,7 +1381,7 @@ void ThreadOpenConnections()
         {
             LOCK(cs_vNodes);
             BOOST_FOREACH(CNode* pnode, vNodes) {
-                if (!pnode->fInbound) {
+                if (!pnode->fInbound && !pnode->fDarkSendMaster) {
                     setConnected.insert(pnode->addr.GetGroup());
                     nOutbound++;
                 }

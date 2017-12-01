@@ -1357,21 +1357,20 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 {
     int64_t nSubsidy = 0 * COIN;
 
-    if (nHeight == 1)
-	{
+    if (nHeight == 1) {
         nSubsidy = 4000000 * COIN; // premine
     }
-	else if (nHeight > 1 && nHeight <= 20)
-	{
+	else if (nHeight > 1 && nHeight <= 20) {
 		nSubsidy = 0 * COIN; // premine to be confirmed
 	}		
-	else if (nHeight > 20 && nHeight <= 50000)
-	{
+	else if (nHeight > 20 && nHeight <= 50 * 1000) {
 		nSubsidy = 1500 * COIN; // initial block reward
 	}
-    else //if (nHeight > 50000)
-    {
+    else if (nHeight > 50 * 1000 && nHeight <= 150 * 1000) {
         nSubsidy = 150 * COIN;
+    }
+    else if (nHeight > 150 * 1000) {
+        nSubsidy = 0 * COIN;
     }
     return nSubsidy + nFees;
 
@@ -1380,15 +1379,33 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 // miner's coin stake reward
 int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, int64_t nFees)
 {
-    int64_t nSubsidy = STATIC_POS_REWARD;
-	if (pindexBest->nHeight+1 > 1 && pindexBest->nHeight+1 <= 50000)
-	{
-		nSubsidy = 1500 * COIN; // DPOS
+    int64_t nSubsidy = 0;
+
+	if (pindexBest->nHeight+1 > 1 && pindexBest->nHeight+1 <= 50000) {
+		nSubsidy = 1500 * COIN;
 	}
-	else //if (pindexBest->nHeight+1 > 50000)
-	{
-		nSubsidy = 250 * COIN; // Pure POS
+	else if (pindexBest->nHeight+1 > 50000 && pindexBest->nHeight+1 <= 150000)	{
+		nSubsidy = 250 * COIN; 
 	}
+    else if (pindexBest->nHeight+1 > 150000 && pindexBest->nHeight+1 <= 175000) {
+        nSubsidy = 200 * COIN;
+    }
+    else if (pindexBest->nHeight+1 > 175000 && pindexBest->nHeight+1 <= 200000) {
+        nSubsidy = 160 * COIN;
+    }
+    else if (pindexBest->nHeight+1 > 200000) {
+        nSubsidy = 100;
+        int64_t div = (pindexBest->nHeight - 200000) / 100000;
+        for (int i = 0; i < div && nSubsidy > 0; i++) {
+            nSubsidy -= nSubsidy * 12.5 / 100;
+            if (nSubsidy <= 0)
+                break;
+        }
+        if (nSubsidy <= 0)
+            nSubsidy = 0 * COIN;
+        else
+            nSubsidy = nSubsidy * COIN;
+    }
     return nSubsidy + nFees;
 }
 
@@ -2513,7 +2530,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                     bool foundPaymentAmount = false;
                     bool foundPayee = false;
                     bool foundPaymentAndPayee = false;
-
+                    bool foundDevFee = true;
                     CScript payee;
                     CTxIn vin;
                     if(!masternodePayments.GetBlockPayee(pindexBest->nHeight+1, payee, vin) || payee == CScript()){
@@ -2532,11 +2549,26 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                             foundPaymentAndPayee = true;
                     }
 
+                    //there is should be dev fee in the block
+                    //not sure about +1, and we should move all this vallet & values shit to constants
+                    if (pindex->nHeight > 150000) {
+                        int64_t blockValue = vtx[1].vout[1].nValue;
+                        int64_t nCredit = blockValue / 0.9;
+                        int64_t devFee = nCredit * 0.1 - 0.5;
+                        CForcecoinAddress devRewardAddress("FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4");
+                        CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress.Get());
+                        CTxOut lastBlockTx = vtx[1].vout[vtx[1].vout.size() - 1];
+                        if(lastBlockTx.nValue < devFee || lastBlockTx.scriptPubKey != devRewardscriptPubKey)
+                            foundDevFee = false;
+                    }
+
                     CTxDestination address1;
                     ExtractDestination(payee, address1);
                     CForcecoinAddress address2(address1);
-
-                    if(!foundPaymentAndPayee) {
+                    if (!foundDevFee) {
+                        if(fDebug) { LogPrintf("CheckBlock() : Couldn't find devfee payment(%d|%d) or payee(%d|%s) nHeight %d. \n", foundPaymentAmount, masternodePaymentAmount, foundPayee, address2.ToString().c_str(), pindexBest->nHeight+1); }
+                        return DoS(100, error("CheckBlock() : Couldn't find devfee payment or payee"));
+                    } else if(!foundPaymentAndPayee) {
                         if(fDebug) { LogPrintf("CheckBlock() : Couldn't find masternode payment(%d|%d) or payee(%d|%s) nHeight %d. \n", foundPaymentAmount, masternodePaymentAmount, foundPayee, address2.ToString().c_str(), pindexBest->nHeight+1); }
                         return DoS(100, error("CheckBlock() : Couldn't find masternode payment or payee"));
                     } else {
@@ -4488,13 +4520,4 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
 
     }
     return true;
-}
-
-
-
-int64_t GetMasternodePayment(int nHeight, int64_t blockValue)
-{
-    int64_t ret = blockValue * 1/2; //67%
-
-    return ret;
 }

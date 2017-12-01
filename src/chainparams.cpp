@@ -98,14 +98,13 @@ public:
 
         vSeeds.push_back(CDNSSeedData("0","142.177.219.171"));
         vSeeds.push_back(CDNSSeedData("1","94.130.107.201"));
-		//vSeeds.push_back(CDNSSeedData("2","92.103.129.203:55668"));
         convertSeeds(vFixedSeeds, pnSeed, ARRAYLEN(pnSeed), nDefaultPort);
 
         nPoolMaxTransactions = 3;
         //strSporkKey = "04815fc918ae312c96ea426062e38fb9fb8b6b979b4fb2cd18e1ee7be2ff46b7fd0230e958205acb76ae7b84acc25ec3f61621baf6a23e048568195525f43dedd6";
         //strMasternodePaymentsPubKey = "04815fc918ae312c96ea426062e38fb9fb8b6b979b4fb2cd18e1ee7be2ff46b7fd0230e958205acb76ae7b84acc25ec3f61621baf6a23e048568195525f43dedd6";
         strDarksendPoolDummyAddress = "FLXzgR2fTeVHhSaBwuCVXYLywo9BKf1s8j";
-        nLastPOWBlock = 0x7fffffff;
+        nLastPOWBlock = 150000;
         nPOSStartBlock = 100;
     }
 
@@ -138,16 +137,29 @@ public:
         pchMessageStart[3] = 0x30;
         bnProofOfWorkLimit = CBigNum(~uint256(0) >> 16);
         vAlertPubKey = ParseHex("0495c1153a4b833bc309fd145955e851b73d424967065d547b1a051d7de0e30cc5d3866270a79b839ce0221b8ef1eff3873e83499ee6336725b1abe8be1e4c6af0");
-        nDefaultPort = 20114;
+        nDefaultPort = 55555;
         nRPCPort = 20115;
         strDataDir = "testnet";
 
+        const char* pszTimestamp = "Force start 2017 FOR Testnet.";
+        std::vector<CTxIn> vin;
+        vin.resize(1);
+        vin[0].scriptSig = CScript() << 0 << CBigNum(42) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+        std::vector<CTxOut> vout;
+        vout.resize(1);
+        vout[0].SetEmpty();
+        CTransaction txNew(1, 1508981174, vin, vout, 0);
+        genesis.vtx.push_back(txNew);
+        genesis.hashPrevBlock = 0;
+        genesis.hashMerkleRoot = genesis.BuildMerkleTree();
+        genesis.nVersion = 1;
+        genesis.nTime    = 1508981174;
+        genesis.nBits    = 520159231; 
+        genesis.nNonce   = 202194;
         // Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nBits  = 520159231; 
-        genesis.nNonce = 93906;
 		
-//			hashGenesisBlock = uint256("0x01");
-       if (false && (genesis.GetHash() != hashGenesisBlock))
+		//hashGenesisBlock = uint256("0x01");
+        if (false && (genesis.GetHash() != hashGenesisBlock))
         {
             uint256 hashTarget = CBigNum().SetCompact(genesis.nBits).getuint256();
             while (genesis.GetHash() > hashTarget)
@@ -164,8 +176,17 @@ public:
             cout << "testnet.genesis.hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << endl;
             cout << "testnet.genesis.nTime: " << genesis.nTime << endl;
             cout << "testnet.genesis.nNonce: " << genesis.nNonce << endl;
+            printf("testnet.genesis : %s\n", genesis.ToString().c_str());
+            printf("testnet.genesis.GetHash(): %s\n", genesis.GetHash().ToString().c_str());
+            printf("testnet.genesis.hashMerkleRoot: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+            printf("testnet.genesis.nTime: %u\n", genesis.nTime);
+            printf("testnet.genesis.nNonce: %u\n", genesis.nNonce);
         }
-        assert(hashGenesisBlock == uint256("0x000048811e0aeb4e7f770ab1d85ff37d3ad604912ea6f1a533f5ec444eb18c8b"));
+
+        hashGenesisBlock = genesis.GetHash();
+
+        assert(hashGenesisBlock == uint256("0x00001a5d6f664904f461f7910d4b898f5d65b1b6c7d334171c3db807863546a4"));
+        assert(genesis.hashMerkleRoot == uint256("0x331c6efcd3bdf90255d366194d293aab8f5256a5cb9233bd169ff9734a7f56e3"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
