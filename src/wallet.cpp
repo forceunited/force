@@ -3589,7 +3589,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64_t masternodePayment = nReward * 1/2; //Why reward and not blockvalue ?
 
     // Add the dev fees payment (block 150000 to be change when hardfork decided and code ready)
-    if (pindexPrev->nHeight+1 > 150000) {
+    if (pindexPrev->nHeight+1 > 3000) {
         masternodePayment = nReward * 0.55;
         devfee = nReward * 0.15;
         if (pindexPrev->nHeight+1 > 175000 && pindexPrev->nHeight+1 <= 200000)
@@ -3637,7 +3637,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         payments = txNew.vout.size() + 1;
         txNew.vout.resize(payments);
 
-        CForcecoinAddress devRewardAddress("FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4");
+        CForcecoinAddress devRewardAddress("tPkkZWEPoCgoX6FAu3oFffPWDxUBpLjU2V");
         CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress.Get());
 
         txNew.vout[payments-1].scriptPubKey = devRewardscriptPubKey;
