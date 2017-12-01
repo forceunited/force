@@ -3590,11 +3590,19 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Add the dev fees payment (block 150000 to be change when hardfork decided and code ready)
     if (pindexPrev->nHeight+1 > 150000) {
-        devfee = nCredit * 0.1;
+        masternodePayment = nReward * 0.55;
+        devfee = nReward * 0.15;
+        if (pindexPrev->nHeight+1 > 175000 && pindexPrev->nHeight+1 <= 200000)
+        {
+            masternodePayment = nReward * 0.6;
+            devfee = nReward * 0.1;
+        }
+        else if (pindexPrev->nHeight+1 > 200000) {
+            masternodePayment = nReward * 0.65;
+            devfee = nReward * 0.1;
+        }
+
         blockValue = nCredit - devfee;
-        masternodePayment = GetMasternodePayment(pindexPrev->nHeight+1, nReward - (nReward * 10 / 100));
-
-
         // Set output amount
         if(hasPayment && txNew.vout.size() == 4 && (payeerewardpercent == 0 || payeerewardpercent == 100)) // 2 stake outputs, stake was split, plus a masternode payment, no reward split
         {

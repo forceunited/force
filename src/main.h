@@ -187,8 +187,6 @@ bool AbortNode(const std::string &msg, const std::string &userMessage="");
 /** Get statistics from node state */
 bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
 
-int64_t GetMasternodePayment(int nHeight, int64_t blockValue);
-
 struct CNodeStateStats {
     int nMisbehavior;
 };
