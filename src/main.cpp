@@ -1375,7 +1375,18 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
     return nSubsidy + nFees;
 
 }
-
+string getDevAddress(int nHeight) {
+	int addrId = nHeight % 4;
+	if (addrId == 0) {
+		return "FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4";
+	} else if (addrId == 1) {
+		return "F6ggTHYd91P6iyQN1fTSGG4RKXuMV1FA69";
+	} else if (addrId == 2) {
+		return "FQF2EdZ3k6a5bz54EVpeGdURutXNqS4iZn";
+	} else {
+		return "FE2JYNtWFgDLHvYcJMmGSMjvVzceuMzX7A";
+	}
+}
 // miner's coin stake reward
 int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, int64_t nFees)
 {
@@ -1384,10 +1395,10 @@ int64_t GetProofOfStakeReward(const CBlockIndex* pindexPrev, int64_t nCoinAge, i
 	if (pindexBest->nHeight+1 > 1 && pindexBest->nHeight+1 <= 50000) {
 		nSubsidy = 1500 * COIN;
 	}
-	else if (pindexBest->nHeight+1 > 50000 && pindexBest->nHeight+1 <= 150000)	{
+	else if (pindexBest->nHeight+1 > 50000 && pindexBest->nHeight+1 <= 155000)	{
 		nSubsidy = 250 * COIN; 
 	}
-    else if (pindexBest->nHeight+1 > 150000 && pindexBest->nHeight+1 <= 175000) {
+    else if (pindexBest->nHeight+1 > 155000 && pindexBest->nHeight+1 <= 175000) {
         nSubsidy = 200 * COIN;
     }
     else if (pindexBest->nHeight+1 > 175000 && pindexBest->nHeight+1 <= 200000) {
@@ -2551,11 +2562,11 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
 
                     //there is should be dev fee in the block
                     //not sure about +1, and we should move all this vallet & values shit to constants
-                    if (pindex->nHeight > 150000) {
+                    if (pindex->nHeight > 155000) {
                         int64_t blockValue = vtx[1].vout[1].nValue;
                         int64_t nCredit = blockValue / 0.9;
                         int64_t devFee = nCredit * 0.1 - 0.5;
-                        CForcecoinAddress devRewardAddress("FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4");
+                        CForcecoinAddress devRewardAddress(getDevAddress(pindex->nHeight));
                         CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress.Get());
                         CTxOut lastBlockTx = vtx[1].vout[vtx[1].vout.size() - 1];
                         if(lastBlockTx.nValue < devFee || lastBlockTx.scriptPubKey != devRewardscriptPubKey)
