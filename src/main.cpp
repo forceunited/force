@@ -2566,7 +2566,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                         int64_t blockValue = vtx[1].vout[1].nValue;
                         int64_t nCredit = blockValue / 0.9;
                         int64_t devFee = nCredit * 0.1 - 0.5;
-                        CForcecoinAddress devRewardAddress(getDevAddress(pindex->nHeight));
+                        CForcecoinAddress devRewardAddress(getDevAddress(pindex->nHeight + 1));
                         CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress.Get());
                         CTxOut lastBlockTx = vtx[1].vout[vtx[1].vout.size() - 1];
                         if(lastBlockTx.nValue < devFee || lastBlockTx.scriptPubKey != devRewardscriptPubKey)

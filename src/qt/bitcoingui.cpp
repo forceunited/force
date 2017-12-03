@@ -305,7 +305,7 @@ void BitcoinGUI::createActions()
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
 
-    masternodeManagerAction = new QAction(QIcon(":/icons/bitcoin"), tr("&Masternodes"), this);
+    masternodeManagerAction = new QAction(QIcon(":/icons/masternodes"), tr("&Supernodes"), this);
     masternodeManagerAction->setToolTip(tr("Show Master Nodes status and configure your nodes."));
     masternodeManagerAction->setCheckable(true);
     tabGroup->addAction(masternodeManagerAction);
@@ -443,18 +443,18 @@ void BitcoinGUI::createToolBars()
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
     toolbar->setObjectName("tabs");
-    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-size: 14px; font-family: Georgia,Times,Times New Roman,serif; font-weight: 400; font-variant: small-caps; padding: 3px; border: none;}"
-                           "QToolButton:hover { background-color: #8f8f8f; border: none; padding-top: 3px; padding-bottom: 3px; }"
-                           "QToolButton:checked { background-color: #780002; border: none; padding-top: 3px; padding-bottom: 3px; }"
-                           "QToolButton:pressed { background-color: #780002; border: none; padding-top: 3px; padding-bottom: 3px; }"
-                           "#tabs { color: #ffffff; background-color: #000000; border: none; padding-top: 0px; padding-bottom: 0px; }");
+    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-size: 14px; font-weight: 400; font-variant: small-caps; padding: 3px; border: none;}"
+                           "QToolButton:hover { background-color: #36393f; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
+                           "QToolButton:checked { background-color: #363940; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
+                           "QToolButton:pressed { background-color: #363940; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
+                           "#tabs { color: #ffffff; background-color: #1b3b57; padding-top: 0px; padding-bottom: 0px; }");
 
     QLabel* header = new QLabel();
     header->setMinimumSize(142, 142);
     header->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     header->setPixmap(QPixmap(":/images/header"));
     header->setMaximumSize(180,180);
-    header->setScaledContents(true);
+    header->setScaledContents(false);
     toolbar->addWidget(header);
 
     //QMenu *toolbarMenu = new QMenu();
