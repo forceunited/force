@@ -447,7 +447,7 @@ void BitcoinGUI::createToolBars()
                            "QToolButton:hover { background-color: #36393f; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
                            "QToolButton:checked { background-color: #363940; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
                            "QToolButton:pressed { background-color: #363940; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
-                           "#tabs { color: #ffffff; background-color: #1b3b57; padding-top: 0px; padding-bottom: 0px; }");
+                           "#tabs { color: #ffffff; background-color: #1b3b57; border: none; padding-top: 0px; padding-bottom: 0px; }");
 
     QLabel* header = new QLabel();
     header->setMinimumSize(142, 142);
