@@ -1378,13 +1378,13 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
 string getDevAddress(int nHeight) {
 	int addrId = nHeight % 4;
 	if (addrId == 0) {
-		return "FPyqQY41PEQze5Md2DHoBpuvLMT3MvEby4";
+        return "tS4KnuryrTdxrkRGuioVj5cCzgnNw1JpYd";
 	} else if (addrId == 1) {
-		return "F6ggTHYd91P6iyQN1fTSGG4RKXuMV1FA69";
+        return "tN9XofCvSMZxUoCo9L6qBbeRrqoHcZDX1g";
 	} else if (addrId == 2) {
-		return "FQF2EdZ3k6a5bz54EVpeGdURutXNqS4iZn";
+        return "tD4CiseFqWGEtTTXH1ASBma1bJXwh4qK4o";
 	} else {
-		return "FE2JYNtWFgDLHvYcJMmGSMjvVzceuMzX7A";
+        return "tCpj2pFkANweii2nTYoZqSPjwDHzxn3aAX";
 	}
 }
 // miner's coin stake reward
