@@ -1369,7 +1369,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees)
     else if (nHeight > 50 * 1000 && nHeight <= 150 * 1000) {
         nSubsidy = 150 * COIN;
     }
-    else if (nHeight > 150 * 1000) {
+    else if (nHeight > 155 * 1000) {
         nSubsidy = 0 * COIN;
     }
     return nSubsidy + nFees;
