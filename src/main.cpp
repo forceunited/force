@@ -2562,7 +2562,7 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
 
                     //there is should be dev fee in the block
                     //not sure about +1, and we should move all this vallet & values shit to constants
-                    if (pindex->nHeight > 155000) {
+                    if (pindex->nHeight > 155000 && pindex->nHeight < 175000) {
                         int64_t blockValue = vtx[1].vout[1].nValue;
                         int64_t nCredit = blockValue / 0.9;
                         int64_t devFee = nCredit * 0.1 - 0.5;
@@ -2571,6 +2571,15 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSig) c
                         CTxOut lastBlockTx = vtx[1].vout[vtx[1].vout.size() - 1];
                         if(lastBlockTx.nValue < devFee || lastBlockTx.scriptPubKey != devRewardscriptPubKey)
                             foundDevFee = false;
+                    } else if (pindex->nHeight >= 175000) {
+                        CForcecoinAddress devRewardAddress(getDevAddress(pindex->nHeight + 1));
+                        CScript devRewardscriptPubKey = GetScriptForDestination(devRewardAddress.Get());
+                        foundDevFee = false;
+                        for (unsigned int i = 0; i < vtx[1].vout.size(); i++) {
+                            if(vtx[1].vout[i].scriptPubKey == devRewardscriptPubKey )
+                                foundDevFee = true;
+
+                        }
                     }
 
                     CTxDestination address1;
