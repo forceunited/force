@@ -15,10 +15,10 @@
         <location line="+41"/>
         <source>Copyright © 2009-2014 The Bitcoin developers
 Copyright © 2012-2014 The NovaCoin developers
-Copyright © 2015-2017 The Force developers</source>
+Copyright © 2014 The Force developers</source>
         <translation>Copyright © 2009-2014 The Bitcoin developers
 Copyright © 2012-2014 The NovaCoin developers
-Copyright © 2015-2017 The Force developers</translation>
+Copyright © 2014 The Force developers</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -131,7 +131,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+0"/>
         <source>Could not write to file %1.</source>
-        <translation>Kunne ikke skrive til fil% 1.</translation>
+        <translation>Kunne ikke skrive til fil %1.</translation>
     </message>
 </context>
 <context>
@@ -511,7 +511,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+488"/>
         <source>Staking.&lt;br&gt;Your weight is %1&lt;br&gt;Network weight is %2&lt;br&gt;Expected time to earn reward is %3</source>
-        <translation>Renter.&lt;br&gt; Din andel er% 1 &lt;br&gt; Netværkets andel er% 2 &lt;br&gt; Forventet tid til at modtage rente %3</translation>
+        <translation>Renter.&lt;br&gt; Din andel er %1 &lt;br&gt; Netværkets andel er %2 &lt;br&gt; Forventet tid til at modtage rente %3</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1816,8 +1816,8 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     </message>
     <message>
         <location filename="../sendcoinsdialog.cpp" line="-173"/>
-        <source>Enter a Force address (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
-        <translation>Indtast en Force-adresse (f.eks B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
+        <source>Enter a Force address (e.g. D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
+        <translation>Indtast en Force-adresse (f.eks D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1872,7 +1872,7 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to send %1?</source>
-        <translation>Er du sikker på du vil sende% 1?</translation>
+        <translation>Er du sikker på du vil sende %1?</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1949,7 +1949,7 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     </message>
     <message>
         <location line="+34"/>
-        <source>The address to send the payment to (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
+        <source>The address to send the payment to (e.g. D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1990,8 +1990,8 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     </message>
     <message>
         <location filename="../sendcoinsentry.cpp" line="+1"/>
-        <source>Enter a Force address (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
-        <translation>Indtast en Force-adresse (f.eks B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
+        <source>Enter a Force address (e.g. D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
+        <translation>Indtast en Force-adresse (f.eks D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
     </message>
 </context>
 <context>
@@ -2014,8 +2014,8 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     </message>
     <message>
         <location line="+18"/>
-        <source>The address to sign the message with (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
-        <translation>Adresse til at underskrive meddelelsen med (f.eks B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
+        <source>The address to sign the message with (e.g. D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
+        <translation>Adresse til at underskrive meddelelsen med (f.eks D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2078,8 +2078,8 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     </message>
     <message>
         <location line="+21"/>
-        <source>The address the message was signed with (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
-        <translation>Adressen meddelelse blev underskrevet med (f.eks B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
+        <source>The address the message was signed with (e.g. D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
+        <translation>Adressen meddelelse blev underskrevet med (f.eks D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -2094,8 +2094,8 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Force address (e.g. B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
-        <translation>Indtast en Force-adresse (f.eks B8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
+        <source>Enter a Force address (e.g. D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</source>
+        <translation>Indtast en Force-adresse (f.eks D8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)</translation>
     </message>
     <message>
         <location line="-2"/>
@@ -2424,7 +2424,7 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     <message>
         <location line="+3"/>
         <source>Confirming (%1 of %2 recommended confirmations)</source>
-        <translation>Bekræftelse (% 1 af% 2 anbefalede bekræftelser)</translation>
+        <translation>Bekræftelse (%1 af %2 anbefalede bekræftelser)</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2434,7 +2434,7 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     <message>
         <location line="+3"/>
         <source>Immature (%1 confirmations, will be available after %2)</source>
-        <translation>Umodne (% 1 bekræftelser, vil være tilgængelige efter% 2)</translation>
+        <translation>Umodne (%1 bekræftelser, vil være tilgængelige efter %2)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2658,7 +2658,7 @@ Det betyder, at et gebyr på mindst %2 er påkrævet.</translation>
     <message>
         <location line="+0"/>
         <source>Could not write to file %1.</source>
-        <translation>Kunne ikke skrive til filen% 1.</translation>
+        <translation>Kunne ikke skrive til filen %1.</translation>
     </message>
     <message>
         <location line="+100"/>
@@ -2894,7 +2894,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Force Alert&quot; admin@foo.co
     <message>
         <location line="+89"/>
         <source>Invalid -tor address: &apos;%s&apos;</source>
-        <translation>Ugyldig-tor-adresse: &apos;% s&apos;</translation>
+        <translation>Ugyldig-tor-adresse: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3111,7 +3111,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Force Alert&quot; admin@foo.co
     <message>
         <location line="+2"/>
         <source>Execute command when a relevant alert is received (%s in cmd is replaced by message)</source>
-        <translation>Udfør kommando, når en relevant advarsel er modtaget (% s i cmd erstattes af meddelelse)</translation>
+        <translation>Udfør kommando, når en relevant advarsel er modtaget (%s i cmd erstattes af meddelelse)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3186,7 +3186,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Force Alert&quot; admin@foo.co
     <message>
         <location line="+104"/>
         <source>Wallet %s resides outside data directory %s.</source>
-        <translation>Wallet% s placeret udenfor data mappe% s.</translation>
+        <translation>Wallet %s placeret udenfor data mappe %s.</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -3291,7 +3291,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Force Alert&quot; admin@foo.co
     <message>
         <location line="+125"/>
         <source>Unable to bind to %s on this computer. Force is probably already running.</source>
-        <translation>Kunne ikke binde sig til% s på denne computer. Force kører sikkert allerede.</translation>
+        <translation>Kunne ikke binde sig til %s på denne computer. Force kører sikkert allerede.</translation>
     </message>
     <message>
         <location line="-101"/>
@@ -3326,7 +3326,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Force Alert&quot; admin@foo.co
     <message>
         <location line="+5"/>
         <source>Invalid amount for -mininput=&lt;amount&gt;: &apos;%s&apos;</source>
-        <translation>Ugyldigt beløb for-mininput = &lt;beløb&gt;: &apos;% s&apos;</translation>
+        <translation>Ugyldigt beløb for-mininput = &lt;beløb&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
         <location line="+3"/>
