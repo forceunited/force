@@ -105,7 +105,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
     setObjectName("Force");
-    setStyleSheet("#Force { background-color: qradialgradient(cx: -0.8, cy: 0, fx: -0.8, fy: 0, radius: 1.4, stop: 0 #dedede, stop: 1 #efefef);  }");
+    setStyleSheet("#Force { background-color: #efefef;  }");
     // Accept D&D of URIs
     setAcceptDrops(true);
 
@@ -276,42 +276,42 @@ void BitcoinGUI::createActions()
     QActionGroup *tabGroup = new QActionGroup(this);
 
     overviewAction = new QAction(QIcon(":/icons/overview"), tr("&Dashboard"), this);
-    overviewAction->setToolTip(tr("Show general overview of wallet"));
+    overviewAction->setToolTip(tr("Get general information"));
     overviewAction->setCheckable(true);
     overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);
 
-    receiveCoinsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Receive"), this);
-    receiveCoinsAction->setToolTip(tr("Show the list of addresses for receiving payments"));
+    receiveCoinsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Account"), this);
+    receiveCoinsAction->setToolTip(tr("View and generate addresses"));
     receiveCoinsAction->setCheckable(true);
     receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
     tabGroup->addAction(receiveCoinsAction);
 
-    sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Send"), this);
-    sendCoinsAction->setToolTip(tr("Send coins to a Force address"));
+    sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Payment"), this);
+    sendCoinsAction->setToolTip(tr("Proceed with payments"));
     sendCoinsAction->setCheckable(true);
     sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
     tabGroup->addAction(sendCoinsAction);
 
-    historyAction = new QAction(QIcon(":/icons/history"), tr("&Transactions"), this);
+    historyAction = new QAction(QIcon(":/icons/history"), tr("&Activity"), this);
     historyAction->setToolTip(tr("Browse transaction history"));
     historyAction->setCheckable(true);
     historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(historyAction);
 
-    addressBookAction = new QAction(QIcon(":/icons/address-book"), tr("&Addresses"), this);
-    addressBookAction->setToolTip(tr("Edit the list of stored addresses and labels"));
+    addressBookAction = new QAction(QIcon(":/icons/address-book"), tr("&Recipients"), this);
+    addressBookAction->setToolTip(tr("Manage and create recipients"));
     addressBookAction->setCheckable(true);
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
 
-    masternodeManagerAction = new QAction(QIcon(":/icons/masternodes"), tr("&Supernodes"), this);
-    masternodeManagerAction->setToolTip(tr("Show Master Nodes status and configure your nodes."));
+    masternodeManagerAction = new QAction(QIcon(":/icons/masternodes"), tr("&Masternodes"), this);
+    masternodeManagerAction->setToolTip(tr("Manage masternodes."));
     masternodeManagerAction->setCheckable(true);
     tabGroup->addAction(masternodeManagerAction);
 
     messageAction = new QAction(QIcon(":/icons/edit"), tr("&Messages"), this);
-    messageAction->setToolTip(tr("View and Send Encrypted messages"));
+    messageAction->setToolTip(tr("View and send encrypted messages"));
     messageAction->setCheckable(true);
     tabGroup->addAction(messageAction);
 
@@ -319,7 +319,7 @@ void BitcoinGUI::createActions()
     blockAction->setToolTip(tr("Explore the BlockChain"));
     blockAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
     blockAction->setCheckable(true);
-    tabGroup->addAction(blockAction);
+    //tabGroup->addAction(blockAction);
 
     TradingAction = new QAction(QIcon(":/icons/trade"), tr("&Bittrex"), this);
     TradingAction ->setToolTip(tr("Start Trading"));
@@ -348,7 +348,7 @@ void BitcoinGUI::createActions()
     connect(messageAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(messageAction, SIGNAL(triggered()), this, SLOT(gotoMessagePage()));
 
-    quitAction = new QAction(tr("E&xit"), this);
+    quitAction = new QAction(tr("&Exit"), this);
     quitAction->setToolTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     quitAction->setMenuRole(QAction::QuitRole);
@@ -430,7 +430,7 @@ void BitcoinGUI::createMenuBar()
 static QWidget* makeToolBarSpacer()
 {
     QWidget* spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     spacer->setStyleSheet("QWidget { background: none; }");
     return spacer;
 }
@@ -443,17 +443,17 @@ void BitcoinGUI::createToolBars()
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
     toolbar->setObjectName("tabs");
-    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-size: 14px; font-weight: 400; font-variant: small-caps; padding: 3px; border: none;}"
-                           "QToolButton:hover { background-color: #36393f; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
-                           "QToolButton:checked { background-color: #363940; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
-                           "QToolButton:pressed { background-color: #363940; border-radius: 3px; padding-top: 3px; padding-bottom: 3px; }"
-                           "#tabs { color: #ffffff; background-color: #1b3b57; border: none; padding-top: 0px; padding-bottom: 0px; }");
+    toolbar->setStyleSheet("QToolButton { color: #ffffff; font-size: 14px; font-weight: 800; text-transform: uppercase; padding: 6px 30px; border: none;}"
+                           "QToolButton:hover { background-color: #19a7d8; padding-top: 6px; padding-bottom: 6px;}"
+                           "QToolButton:checked { background-color: #19a7d8; padding-top: 6px; padding-bottom: 6px; }"
+                           "QToolButton:pressed { background-color: #19a7d8; padding-top: 6px; padding-bottom: 6px; }"
+                           "#tabs { color: #ffffff; background-color: #1d5f7c; border: none; padding-top: 0px; padding-bottom: 0px; }");
 
     QLabel* header = new QLabel();
-    header->setMinimumSize(142, 142);
+    header->setMinimumSize(250, 250);
     header->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     header->setPixmap(QPixmap(":/images/header"));
-    header->setMaximumSize(180,180);
+    header->setMaximumSize(250,250);
     header->setScaledContents(false);
     toolbar->addWidget(header);
 
@@ -462,14 +462,14 @@ void BitcoinGUI::createToolBars()
     toolbar->addAction(receiveCoinsAction);
     toolbar->addAction(sendCoinsAction);
     toolbar->addAction(historyAction);
-    toolbar->addAction(addressBookAction);
     toolbar->addAction(masternodeManagerAction);
+    toolbar->addAction(addressBookAction);
 
     if (!fLiteMode){
         toolbar->addAction(messageAction);
     }
 
-    toolbar->addAction(blockAction);
+    //toolbar->addAction(blockAction);
     //toolbar->addAction(TradingAction);
     netLabel = new QLabel();
 
@@ -483,7 +483,7 @@ void BitcoinGUI::createToolBars()
     addToolBar(Qt::LeftToolBarArea, toolbar);
 
     foreach(QAction *action, toolbar->actions()) {
-        toolbar->widgetForAction(action)->setFixedWidth(142);
+        toolbar->widgetForAction(action)->setFixedWidth(250);
     }
 }
 
@@ -861,7 +861,7 @@ void BitcoinGUI::askFee(qint64 nFeeRequired, bool *payFee)
 
 void BitcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int end)
 {
-	// Prevent balloon-spam when initial block download is in progress
+    // Prevent balloon-spam when initial block download is in progress
     if(!walletModel || !clientModel || clientModel->inInitialBlockDownload() || walletModel->processingQueuedTransactions())
         return;
 
