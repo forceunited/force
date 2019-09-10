@@ -82,7 +82,7 @@ public:
         genesis.nBits    = 520159231; 
         genesis.nNonce   = 93906;
 
-		
+        
         hashGenesisBlock = genesis.GetHash();
 
         assert(hashGenesisBlock == uint256("0x000048811e0aeb4e7f770ab1d85ff37d3ad604912ea6f1a533f5ec444eb18c8b"));
@@ -96,8 +96,8 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
         base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >();
 
-        vSeeds.push_back(CDNSSeedData("1","94.130.107.201"));
-        vSeeds.push_back(CDNSSeedData("2","45.77.201.147"));
+        vSeeds.push_back(CDNSSeedData("1","216.155.157.158"));
+        vSeeds.push_back(CDNSSeedData("2","140.82.14.17"));
 
         convertSeeds(vFixedSeeds, pnSeed, ARRAYLEN(pnSeed), nDefaultPort);
 
@@ -158,8 +158,8 @@ public:
         genesis.nBits    = 520159231; 
         genesis.nNonce   = 202194;
         // Modify the testnet genesis block so the timestamp is valid for a later start.
-		
-		//hashGenesisBlock = uint256("0x01");
+        
+        //hashGenesisBlock = uint256("0x01");
         if (false && (genesis.GetHash() != hashGenesisBlock))
         {
             uint256 hashTarget = CBigNum().SetCompact(genesis.nBits).getuint256();
